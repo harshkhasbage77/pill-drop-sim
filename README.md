@@ -3,7 +3,9 @@
 A pill-shaped object, half metal (heavy) and half plastic (light), thrown from a roof.
 Gravity, air resistance, viscosity, buoyancy, wind, and ground bounce are all included.
 
-## Run
+**Live:** https://harshkhasbage77.github.io/pill-drop-sim/
+
+## Run locally
 
 ```sh
 cd ~/Documents/pill-drop-sim
