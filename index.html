@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pill Drop Simulator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="panel">
+      <header>
+        <h1>Pill drop</h1>
+        <p class="sub">Half metal (heavy), half plastic (light), thrown from a roof.</p>
+      </header>
+
+      <div class="buttons">
+        <button id="play" class="primary">▶ Play</button>
+        <button id="reset">↺ Reset</button>
+      </div>
+      <button id="standard" class="wide">Reset world &amp; calibration to standard</button>
+
+      <div id="controls"></div>
+
+      <details class="group" open>
+        <summary>Options</summary>
+        <label class="check"><input type="checkbox" id="stopOnImpact"> Stop at first ground hit</label>
+        <label class="check"><input type="checkbox" id="showTrail" checked> Show path</label>
+        <label class="check"><input type="checkbox" id="showGhosts" checked> Show pill every 0.25 s</label>
+      </details>
+
+      <details class="group how">
+        <summary>How the physics works</summary>
+        <pre class="flow">weight     → pulls at the balance point (near the metal end)
+fluid push → acts at the middle of the pill
+middle is behind the balance point
+           → fluid turns the metal end to the front
+             (same reason a dart flies point-first)</pre>
+        <table>
+          <tr><th>Force</th><th>Formula</th><th>Wins when</th></tr>
+          <tr><td>Pressure drag</td><td>½·ρ·Cd·A·v²</td><td>fast, thin fluid (air)</td></tr>
+          <tr><td>Viscous drag</td><td>6π·μ·R·v</td><td>slow, thick fluid (honey)</td></tr>
+          <tr><td>Buoyancy</td><td>ρ·V·g, up</td><td>dense fluid (water)</td></tr>
+        </table>
+        <p>The <b>Reynolds number</b> Re = ρ·v·D/μ tells which drag wins. Above ~1000 pressure drag wins. Below ~1 viscous drag wins.</p>
+        <p>Drag is added up over 32 slices along the pill. So a tilted or spinning pill gets pushed harder on one side, and turns.</p>
+        <p><b>Not modelled:</b> tumbling out of the screen plane (this is 2D), gusts, the fluid moving with the pill.</p>
+      </details>
+    </aside>
+
+    <main class="stage">
+      <canvas id="scene"></canvas>
+      <div class="side">
+        <div class="card inset-wrap">
+          <div class="card-title">Close-up at the real angle</div>
+          <canvas id="inset"></canvas>
+          <div class="legend">
+            <span><i class="sw metal"></i>metal</span>
+            <span><i class="sw plastic"></i>plastic</span>
+            <span><i class="dot com"></i>balance point</span>
+            <span><i class="dot mid"></i>middle</span>
+            <span><i class="ln weight"></i>weight</span>
+            <span><i class="ln fluid"></i>fluid push</span>
+            <span><i class="ln moving"></i>moving</span>
+          </div>
+        </div>
+        <div id="readouts" class="card readouts"></div>
+      </div>
+      <div id="status" class="status"></div>
+      <div id="scaleNote" class="note"></div>
+    </main>
+  </div>
+  <script src="physics.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
